@@ -22,6 +22,17 @@ export async function generateMetadata({
   return {
     title: article.title,
     description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: [{ url: "/podcast-cover.jpg", width: 1000, height: 1000 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: ["/podcast-cover.jpg"],
+    },
   };
 }
 

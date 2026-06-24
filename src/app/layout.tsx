@@ -60,12 +60,14 @@ export const metadata: Metadata = {
     url: "https://gempursuit.com",
     siteName: "Gem Pursuit",
     type: "website",
+    images: [{ url: "/podcast-cover.jpg", width: 1000, height: 1000, alt: "Gem Pursuit" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Gem Pursuit — An Antique Jewellery Podcast",
     description:
       "Stories, history and obsessions from the world of antique and vintage jewellery.",
+    images: ["/podcast-cover.jpg"],
   },
 };
 

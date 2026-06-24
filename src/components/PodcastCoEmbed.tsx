@@ -15,7 +15,7 @@ export function PodcastCoEmbed() {
         className="podcastdotco-player podcastdotco-player--podcast block w-full"
         title="Gem Pursuit on Podcast.co"
       />
-      <Script src="https://play.pod.co/embed/frame-v1.js" strategy="lazyOnload" />
+      <Script src="https://play.pod.co/embed/frame-v1.js" strategy="afterInteractive" />
     </div>
   );
 }

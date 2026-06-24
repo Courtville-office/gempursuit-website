@@ -20,7 +20,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-gold/20 bg-maroon/95 backdrop-blur supports-[backdrop-filter]:bg-maroon/80">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6 md:py-2">
-        <Wordmark size="sm" />
+        <Wordmark />
 
         <nav className="hidden items-center gap-5 md:flex lg:gap-7">
           {nav.map((item) => (

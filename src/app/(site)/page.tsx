@@ -68,7 +68,7 @@ export default async function HomePage() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-gold/10 blur-2xl" aria-hidden />
+            <div className="absolute -inset-4 rounded-3xl bg-gold/10 blur-2xl pointer-events-none" aria-hidden />
             <PodcastCoEmbed />
           </div>
         </div>

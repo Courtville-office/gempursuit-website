@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Per-episode auto-emails are disabled. Newsletter is now composed manually
+# in Mailchimp (the existing courtville.ie list). To re-enable hourly
+# checking, restore netlify/functions/check-episodes.mts and add back:
+#   [functions."check-episodes"]
+#     schedule = "0 * * * *"

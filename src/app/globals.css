@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FAF1D0;
+  --foreground: #1F2147;
+}
+
+html,
+body {
+  background: linear-gradient(to bottom, #f2f2f2, #ffffff);
+  min-height: 100vh;
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #F2D04E;
+  color: #1A1D4D;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .deco-divider {
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      #2D2E8C 20%,
+      #F2D04E 50%,
+      #C84526 80%,
+      transparent
+    );
+    height: 2px;
+  }
+
+  .gold-shimmer {
+    background: linear-gradient(120deg, #2D2E8C 0%, #4344A8 50%, #1A1D4D 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-gold px-6 py-3 font-semibold text-white shadow-lg shadow-gold-deep/20 transition hover:bg-gold-soft hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-gold px-6 py-3 font-semibold text-gold transition hover:bg-gold hover:text-white;
+  }
+
+  .card {
+    @apply rounded-2xl border border-gold/15 bg-maroon-deep p-6 shadow-xl shadow-gold-deep/10;
+  }
+}

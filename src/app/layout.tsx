@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lora, Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 
 const lora = Lora({
@@ -78,7 +79,10 @@ export default function RootLayout({
       lang="en-GB"
       className={`${lora.variable} ${cormorantGaramond.variable} ${artisualDeco.variable}`}
     >
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        {children}
+        <Script src="https://play.pod.co/embed/frame-v1.js" strategy="afterInteractive" />
+      </body>
     </html>
   );
 }

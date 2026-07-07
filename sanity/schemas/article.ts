@@ -47,6 +47,36 @@ export const article = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "headerImage",
+      title: "Header image",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: "caption",
+          title: "Caption",
+          type: "text",
+          rows: 2,
+        }),
+        defineField({
+          name: "credit",
+          title: "Credit",
+          type: "string",
+        }),
+        defineField({
+          name: "sourceUrl",
+          title: "Source URL",
+          type: "url",
+        }),
+      ],
+    }),
+    defineField({
       name: "body",
       title: "Body",
       type: "array",

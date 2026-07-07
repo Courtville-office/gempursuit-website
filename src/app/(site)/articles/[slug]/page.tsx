@@ -20,19 +20,31 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = await fetchArticle(slug);
   if (!article) return {};
+  const previewImage = article.headerImage?.asset?.url || "/podcast-cover.jpg";
+  const previewWidth =
+    article.headerImage?.asset?.metadata?.dimensions?.width ?? 1000;
+  const previewHeight =
+    article.headerImage?.asset?.metadata?.dimensions?.height ?? 1000;
   return {
     title: article.title,
     description: article.excerpt,
     openGraph: {
       title: article.title,
       description: article.excerpt,
-      images: [{ url: "/podcast-cover.jpg", width: 1000, height: 1000 }],
+      images: [
+        {
+          url: previewImage,
+          width: previewWidth,
+          height: previewHeight,
+          alt: article.headerImage?.alt || article.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.excerpt,
-      images: ["/podcast-cover.jpg"],
+      images: [previewImage],
     },
   };
 }
@@ -104,49 +116,59 @@ const portableTextComponents: PortableTextComponents = {
     ),
   },
   types: {
-    image: ({ value }) => {
-      const image = value as ArticleImageValue;
-      const url = image.asset?.url;
-      if (!url) return null;
-
-      const width = image.asset?.metadata?.dimensions?.width ?? 1200;
-      const height = image.asset?.metadata?.dimensions?.height ?? 800;
-      const credit = image.credit || image.sourceUrl;
-
-      return (
-        <figure className="my-10">
-          <Image
-            src={url}
-            alt={image.alt || image.caption || ""}
-            width={width}
-            height={height}
-            className="h-auto w-full rounded-lg border border-gold/15 bg-black/20 object-contain"
-            sizes="(min-width: 768px) 768px, 100vw"
-          />
-          {(image.caption || credit) && (
-            <figcaption className="mt-3 text-sm leading-relaxed text-cream/55">
-              {image.caption}
-              {image.caption && credit ? " " : ""}
-              {credit &&
-                (image.sourceUrl ? (
-                  <a
-                    href={image.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gold/80 hover:text-gold hover:underline"
-                  >
-                    {image.credit || "Source"}
-                  </a>
-                ) : (
-                  <span>{image.credit}</span>
-                ))}
-            </figcaption>
-          )}
-        </figure>
-      );
-    },
+    image: ({ value }) => (
+      <ArticleImageFigure image={value as ArticleImageValue} />
+    ),
   },
 };
+
+function ArticleImageFigure({
+  image,
+  priority = false,
+}: {
+  image: ArticleImageValue;
+  priority?: boolean;
+}) {
+  const url = image.asset?.url;
+  if (!url) return null;
+
+  const width = image.asset?.metadata?.dimensions?.width ?? 1200;
+  const height = image.asset?.metadata?.dimensions?.height ?? 800;
+  const credit = image.credit || image.sourceUrl;
+
+  return (
+    <figure className="my-10">
+      <Image
+        src={url}
+        alt={image.alt || image.caption || ""}
+        width={width}
+        height={height}
+        priority={priority}
+        className="h-auto w-full rounded-lg border border-gold/15 bg-black/20 object-contain"
+        sizes="(min-width: 768px) 768px, 100vw"
+      />
+      {(image.caption || credit) && (
+        <figcaption className="mt-3 text-sm leading-relaxed text-cream/55">
+          {image.caption}
+          {image.caption && credit ? " " : ""}
+          {credit &&
+            (image.sourceUrl ? (
+              <a
+                href={image.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gold/80 hover:text-gold hover:underline"
+              >
+                {image.credit || "Source"}
+              </a>
+            ) : (
+              <span>{image.credit}</span>
+            ))}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
 
 export default async function ArticlePage({
   params,
@@ -184,6 +206,13 @@ export default async function ArticlePage({
           </p>
         )}
       </header>
+
+      {article.headerImage && (
+        <ArticleImageFigure
+          image={article.headerImage as ArticleImageValue}
+          priority
+        />
+      )}
 
       <div className="mt-10 text-cream/85">
         {article.body ? (

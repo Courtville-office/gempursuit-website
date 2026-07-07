@@ -118,6 +118,9 @@ export type PortableTextBlock = {
   style?: string;
   children?: { _type: string; text?: string; marks?: string[] }[];
   markDefs?: { _key: string; _type: string; href?: string }[];
+} & SanityImage;
+
+export type SanityImage = {
   asset?: {
     _id?: string;
     url?: string;
@@ -165,6 +168,16 @@ const ARTICLE_QUERY = /* groq */ `
     episodeTitle,
     episodeUrl,
     excerpt,
+    headerImage {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    },
     body[] {
       ...,
       _type == "image" => {
@@ -192,6 +205,7 @@ export type ArticleListItem = {
 
 export type ArticleDoc = ArticleListItem & {
   episodeUrl?: string;
+  headerImage?: SanityImage;
   body?: PortableTextBlock[];
 };
 

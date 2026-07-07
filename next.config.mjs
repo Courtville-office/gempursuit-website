@@ -14,6 +14,13 @@ const nextConfig = {
   async redirects() {
     return [
       { source: "/guests", destination: "/specials", permanent: true },
+      {
+        source:
+          "/articles/jean-baptiste-tavernier-map-sellers-son-behind-hope-diamond",
+        destination:
+          "/articles/jean-baptiste-tavernier-historys-greatest-jewel-merchant",
+        permanent: true,
+      },
       // /admin was the previous Decap-CMS path. Forward to the new
       // Sanity Studio so any old links / bookmarks still work.
       { source: "/admin", destination: "/studio", permanent: true },

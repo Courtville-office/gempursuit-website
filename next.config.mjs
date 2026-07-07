@@ -8,6 +8,7 @@ const nextConfig = {
       { protocol: "https", hostname: "i3.ytimg.com" },
       { protocol: "https", hostname: "i4.ytimg.com" },
       { protocol: "https", hostname: "yt3.ggpht.com" },
+      { protocol: "https", hostname: "cdn.sanity.io" },
     ],
   },
   async redirects() {

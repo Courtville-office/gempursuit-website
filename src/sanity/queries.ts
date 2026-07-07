@@ -113,11 +113,26 @@ export const fetchSpecialsPage = () =>
   fetchOnce<SpecialsPageDoc>(SPECIALS_PAGE_QUERY);
 
 export type PortableTextBlock = {
-  _type: "block";
+  _type: "block" | "image";
   _key?: string;
   style?: string;
   children?: { _type: string; text?: string; marks?: string[] }[];
   markDefs?: { _key: string; _type: string; href?: string }[];
+  asset?: {
+    _id?: string;
+    url?: string;
+    metadata?: {
+      dimensions?: {
+        width?: number;
+        height?: number;
+        aspectRatio?: number;
+      };
+    };
+  };
+  alt?: string;
+  caption?: string;
+  credit?: string;
+  sourceUrl?: string;
 };
 
 export type PrivacyDoc = {
@@ -150,7 +165,19 @@ const ARTICLE_QUERY = /* groq */ `
     episodeTitle,
     episodeUrl,
     excerpt,
-    body
+    body[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset-> {
+          _id,
+          url,
+          metadata {
+            dimensions
+          }
+        }
+      }
+    }
   }
 `;
 

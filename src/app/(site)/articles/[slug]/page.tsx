@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
@@ -45,6 +46,22 @@ function formatDate(iso: string): string {
   });
 }
 
+type ArticleImageValue = {
+  asset?: {
+    url?: string;
+    metadata?: {
+      dimensions?: {
+        width?: number;
+        height?: number;
+      };
+    };
+  };
+  alt?: string;
+  caption?: string;
+  credit?: string;
+  sourceUrl?: string;
+};
+
 const portableTextComponents: PortableTextComponents = {
   block: {
     h2: ({ children }) => (
@@ -85,6 +102,49 @@ const portableTextComponents: PortableTextComponents = {
         {children}
       </a>
     ),
+  },
+  types: {
+    image: ({ value }) => {
+      const image = value as ArticleImageValue;
+      const url = image.asset?.url;
+      if (!url) return null;
+
+      const width = image.asset?.metadata?.dimensions?.width ?? 1200;
+      const height = image.asset?.metadata?.dimensions?.height ?? 800;
+      const credit = image.credit || image.sourceUrl;
+
+      return (
+        <figure className="my-10">
+          <Image
+            src={url}
+            alt={image.alt || image.caption || ""}
+            width={width}
+            height={height}
+            className="h-auto w-full rounded-lg border border-gold/15 bg-black/20 object-contain"
+            sizes="(min-width: 768px) 768px, 100vw"
+          />
+          {(image.caption || credit) && (
+            <figcaption className="mt-3 text-sm leading-relaxed text-cream/55">
+              {image.caption}
+              {image.caption && credit ? " " : ""}
+              {credit &&
+                (image.sourceUrl ? (
+                  <a
+                    href={image.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gold/80 hover:text-gold hover:underline"
+                  >
+                    {image.credit || "Source"}
+                  </a>
+                ) : (
+                  <span>{image.credit}</span>
+                ))}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
   },
 };
 

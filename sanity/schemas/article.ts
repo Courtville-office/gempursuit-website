@@ -80,6 +80,35 @@ export const article = defineType({
             ],
           },
         },
+        {
+          type: "image",
+          title: "Image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt text",
+              type: "string",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "caption",
+              title: "Caption",
+              type: "text",
+              rows: 2,
+            }),
+            defineField({
+              name: "credit",
+              title: "Credit",
+              type: "string",
+            }),
+            defineField({
+              name: "sourceUrl",
+              title: "Source URL",
+              type: "url",
+            }),
+          ],
+        },
       ],
     }),
   ],

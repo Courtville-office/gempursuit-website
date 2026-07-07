@@ -193,7 +193,17 @@ export default async function ArticlePage({
           {formatDate(article.publishedAt)}
           {article.episodeTitle && (
             <span className="ml-3 normal-case tracking-normal text-[11px] text-cream/50">
-              Based on: {article.episodeTitle}
+              Based on:{" "}
+              {article.episodeUrl ? (
+                <a
+                  href={article.episodeUrl}
+                  className="text-gold/75 hover:text-gold hover:underline"
+                >
+                  {article.episodeTitle}
+                </a>
+              ) : (
+                article.episodeTitle
+              )}
             </span>
           )}
         </p>

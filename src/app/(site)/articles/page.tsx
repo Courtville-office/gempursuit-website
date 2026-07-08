@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { fetchArticles } from "@/sanity/queries";
 
@@ -42,27 +43,42 @@ export default async function ArticlesPage() {
             <Link
               key={article._id}
               href={`/articles/${article.slug}`}
-              className="card block transition hover:border-gold/40"
+              className={`card group grid overflow-hidden p-0 transition hover:border-gold/40 ${
+                article.headerImage?.asset?.url ? "md:grid-cols-[240px_1fr]" : ""
+              }`}
             >
-              <p className="text-xs uppercase tracking-[0.3em] text-gold">
-                {formatDate(article.publishedAt)}
-                {article.episodeTitle && (
-                  <span className="ml-3 normal-case tracking-normal text-[11px] text-cream/50">
-                    Based on: {article.episodeTitle}
-                  </span>
-                )}
-              </p>
-              <h2 className="mt-2 font-display text-2xl text-cream">
-                {article.title}
-              </h2>
-              {article.excerpt && (
-                <p className="mt-3 text-cream/75 leading-relaxed line-clamp-3">
-                  {article.excerpt}
-                </p>
+              {article.headerImage?.asset?.url && (
+                <div className="relative aspect-[16/10] overflow-hidden border-b border-gold/15 bg-black/20 md:aspect-auto md:min-h-full md:border-b-0 md:border-r">
+                  <Image
+                    src={article.headerImage.asset.url}
+                    alt={article.headerImage.alt || article.title}
+                    fill
+                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                    sizes="(min-width: 768px) 240px, 100vw"
+                  />
+                </div>
               )}
-              <p className="mt-4 text-xs uppercase tracking-widest text-gold/70">
-                Read article →
-              </p>
+              <div className="p-6">
+                <p className="text-xs uppercase tracking-[0.3em] text-gold">
+                  {formatDate(article.publishedAt)}
+                  {article.episodeTitle && (
+                    <span className="ml-3 normal-case tracking-normal text-[11px] text-cream/50">
+                      Based on: {article.episodeTitle}
+                    </span>
+                  )}
+                </p>
+                <h2 className="mt-2 font-display text-2xl text-cream">
+                  {article.title}
+                </h2>
+                {article.excerpt && (
+                  <p className="mt-3 text-cream/75 leading-relaxed line-clamp-3">
+                    {article.excerpt}
+                  </p>
+                )}
+                <p className="mt-4 text-xs uppercase tracking-widest text-gold/70">
+                  Read article →
+                </p>
+              </div>
             </Link>
           ))}
         </section>

@@ -155,7 +155,17 @@ const ARTICLES_QUERY = /* groq */ `
     "slug": slug.current,
     publishedAt,
     episodeTitle,
-    excerpt
+    excerpt,
+    headerImage {
+      ...,
+      asset-> {
+        _id,
+        url,
+        metadata {
+          dimensions
+        }
+      }
+    }
   }
 `;
 
@@ -201,6 +211,7 @@ export type ArticleListItem = {
   publishedAt: string;
   episodeTitle: string;
   excerpt: string;
+  headerImage?: SanityImage;
 };
 
 export type ArticleDoc = ArticleListItem & {

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { ArticleListenButtons } from "@/components/ArticleListenButtons";
 import { fetchArticle, fetchArticles } from "@/sanity/queries";
 
 export const revalidate = 600;
@@ -178,6 +179,11 @@ export default async function ArticlePage({
   const { slug } = await params;
   const article = await fetchArticle(slug);
   if (!article) notFound();
+  const body = article.body || [];
+  const sectionIndex = body.findIndex((block: { _type?: string; style?: string; children?: { text?: string }[] }) =>
+    block._type === "block" && (block.style === "h2" || block.style === "h3" || /^1\.\s/.test(block.children?.map((child) => child.text || "").join("") || ""))
+  );
+  const splitIndex = sectionIndex > 0 ? sectionIndex : Math.min(2, body.length);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
@@ -226,12 +232,13 @@ export default async function ArticlePage({
 
       <div className="mt-10 text-cream/85">
         {article.body ? (
-          <PortableText
-            value={article.body}
-            components={portableTextComponents}
-          />
+          <>
+            <PortableText value={body.slice(0, splitIndex)} components={portableTextComponents} />
+            <ArticleListenButtons episodeUrl={article.episodeUrl} />
+            <PortableText value={body.slice(splitIndex)} components={portableTextComponents} />
+          </>
         ) : (
-          <p className="text-cream/60">No content yet.</p>
+          <><ArticleListenButtons episodeUrl={article.episodeUrl} /><p className="text-cream/60">No content yet.</p></>
         )}
       </div>
 
